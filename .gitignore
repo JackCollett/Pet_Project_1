@@ -1,1 +1,4 @@
 pet_venv
+__pycache__
+.pytest_cache
+flask_session
