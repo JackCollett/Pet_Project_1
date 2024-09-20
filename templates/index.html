@@ -3,9 +3,31 @@
 {% block body %}
 
     {% if name %}
-        You are logged in as {{ name }}. <a href="/logout">Log out</a>.
+        You are logged in as {{ name }}. 
+        <a href="/logout">Log out</a>.
+        <div class="imageContainer">
+            <a id="imageLink" href="#">
+                <img alt="" id="unsplashImage">
+            </a>
+        </div>
+        <script>
+            let clientID = "hp-n5d8W2_nK0fG91scJv4G9dGCGlxF_7VKonhj0TX8";
+            let endpoint = `https://api.unsplash.com/photos/random/?client_id=${clientID}`;
+
+            let imageElement = document.querySelector("#unsplashImage");
+            let imageLink = document.querySelector("#imageLink");
+
+            fetch(endpoint)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (jsonData) {
+                    imageElement.src = jsonData.urls.regular;
+                })
+        </script>
+        
     {% else %}
-        You are not logged in. <a href="/login">Log in</a>.
+        <h1>You are not logged in.</h1> <a href="/login">Log in</a>.
     {% endif %}
 
 {% endblock %}
