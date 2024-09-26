@@ -3,28 +3,82 @@
 {% block body %}
 
     {% if name %}
-        You are logged in as {{ name }}. 
-        <a href="/logout">Log out</a>.
-        <div class="imageContainer">
-            <a id="imageLink" href="#">
-                <img alt="" id="unsplashImage">
-            </a>
+        <div class="responsive">
+            <div class="gallery">
+                <a id="imageLink" href="#">
+                    <img alt="" id="unsplashImage">
+                </a>
+            </div>
         </div>
+        <div class="responsive">
+            <div class="gallery">
+                <a id="imageLink" href="#">
+                    <img alt="" id="unsplashImage2">
+                </a>
+            </div>
+        </div>
+        <div class="responsive">
+            <div class="gallery">
+                <a id="imageLink" href="#">
+                    <img alt="" id="unsplashImage3">
+                </a>
+            </div>
+        </div>
+        <div class="responsive">
+            <div class="gallery">
+                <a id="imageLink" href="#">
+                    <img alt="" id="unsplashImage4">
+                </a>
+            </div>
+        </div>
+        <div class="responsive">
+            <div class="gallery">
+                <a id="imageLink" href="#">
+                    <img alt="" id="unsplashImage5">
+                </a>
+            </div>
+        </div>
+        <div class="responsive">
+            <div class="gallery">
+                <a id="imageLink" href="#">
+                    <img alt="" id="unsplashImage6">
+                </a>
+            </div>
+        </div>
+
         <script>
             let clientID = "hp-n5d8W2_nK0fG91scJv4G9dGCGlxF_7VKonhj0TX8";
-            let endpoint = `https://api.unsplash.com/photos/random/?client_id=${clientID}`;
+            let endpoint = `https://api.unsplash.com/photos/random/?count=6&client_id=${clientID}`;
 
-            let imageElement = document.querySelector("#unsplashImage");
             let imageLink = document.querySelector("#imageLink");
+            let imageElement = document.querySelector("#unsplashImage");
+            let imageElement2 = document.querySelector("#unsplashImage2");
+            let imageElement3 = document.querySelector("#unsplashImage3");
+            let imageElement4 = document.querySelector("#unsplashImage4");
+            let imageElement5 = document.querySelector("#unsplashImage5");
+            let imageElement6 = document.querySelector("#unsplashImage6");
 
             fetch(endpoint)
                 .then(function (response) {
                     return response.json();
                 })
                 .then(function (jsonData) {
-                    imageElement.src = jsonData.urls.regular;
+                    imageElement.src = jsonData[0].urls.regular;
+                    imageElement2.src = jsonData[1].urls.regular;
+                    imageElement3.src = jsonData[2].urls.regular;
+                    imageElement4.src = jsonData[3].urls.regular;
+                    imageElement5.src = jsonData[4].urls.regular;
+                    imageElement6.src = jsonData[5].urls.regular;
+                })
+                .catch(function (error) {
+                    console.log("Error: " + error);
                 })
         </script>
+
+        <footer>
+            You are logged in as {{ name }}. 
+            <a href="/logout">Log out</a>.
+        </footer>
         
     {% else %}
         <h1>You are not logged in.</h1> <a href="/login">Log in</a>.
