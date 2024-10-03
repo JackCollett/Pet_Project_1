@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block body %}
+{% if name %}
+
+<div class="responsive">
+    <div class="gallery">
+        <a id="imageLink" href="#">
+            <img src="{{ image }}" alt="" id="unsplashImage">
+        </a>
+    </div>
+
+
+<footer>
+    You are logged in as {{ name }}. 
+    <a href="/logout">Log out</a>.
+</footer>
+{% else %}
+<h1>You are not logged in.</h1> <a href="/login">Log in</a>.
+{% endif %}
+
+{% endblock %}

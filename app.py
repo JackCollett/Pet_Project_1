@@ -51,6 +51,11 @@ def index():
     conn.close() 
     return render_template("index.html", name=session.get("name"), data=data)
 
+@app.route('/edit')
+def edit():
+    image = request.args.get("image_url")
+    return render_template("edit.html", name=session.get("name"), image=image)
+
 @app.route('/create', methods=['POST']) 
 def create(): 
     conn = psycopg2.connect(database="media", 

@@ -106,10 +106,18 @@
                     imageElement4.src = jsonData[3].urls.regular;
                     imageElement5.src = jsonData[4].urls.regular;
                     imageElement6.src = jsonData[5].urls.regular;
+
+                    imageElement.onclick = function() {
+                        let editUrl = "{{ url_for('edit') }}?image_url=" + encodeURIComponent(jsonData[0].urls.regular)
+                        navtigateTo(editUrl)
+                    }
                 })
                 .catch(function (error) {
                     console.log("Error: " + error);
                 })
+            function navtigateTo(routeUrl) {
+                window.location.href = routeUrl;
+            }
         </script>
 
         <footer>
