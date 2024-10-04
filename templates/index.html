@@ -86,38 +86,38 @@
         <script>
             let clientID = "hp-n5d8W2_nK0fG91scJv4G9dGCGlxF_7VKonhj0TX8";
             let endpoint = `https://api.unsplash.com/photos/random/?count=6&client_id=${clientID}`;
-
             let imageLink = document.querySelector("#imageLink");
-            let imageElement = document.querySelector("#unsplashImage");
-            let imageElement2 = document.querySelector("#unsplashImage2");
-            let imageElement3 = document.querySelector("#unsplashImage3");
-            let imageElement4 = document.querySelector("#unsplashImage4");
-            let imageElement5 = document.querySelector("#unsplashImage5");
-            let imageElement6 = document.querySelector("#unsplashImage6");
+            let imageElements = [ 
+            document.querySelector("#unsplashImage"),
+            document.querySelector("#unsplashImage2"),
+            document.querySelector("#unsplashImage3"),
+            document.querySelector("#unsplashImage4"),
+            document.querySelector("#unsplashImage5"),
+            document.querySelector("#unsplashImage6")
+            ];
 
+            function navigateTo(routeUrl) {
+                window.location.href = routeUrl;  // Navigate to the provided URL
+            }
+
+            // fetch images from Unsplash API
             fetch(endpoint)
                 .then(function (response) {
                     return response.json();
                 })
                 .then(function (jsonData) {
-                    imageElement.src = jsonData[0].urls.regular;
-                    imageElement2.src = jsonData[1].urls.regular;
-                    imageElement3.src = jsonData[2].urls.regular;
-                    imageElement4.src = jsonData[3].urls.regular;
-                    imageElement5.src = jsonData[4].urls.regular;
-                    imageElement6.src = jsonData[5].urls.regular;
+                    imageElements.forEach(function (imageElement, index) {
+                        imageElement.src = jsonData[index].urls.regular;
 
-                    imageElement.onclick = function() {
-                        let editUrl = "{{ url_for('edit') }}?image_url=" + encodeURIComponent(jsonData[0].urls.regular)
-                        navtigateTo(editUrl)
-                    }
+                        imageElement.onclick = function() {
+                            let editUrl = "/edit?image_url=" + encodeURIComponent(jsonData[index].urls.regular);
+                            navigateTo(editUrl);
+                        };
+                    });
                 })
                 .catch(function (error) {
                     console.log("Error: " + error);
                 })
-            function navtigateTo(routeUrl) {
-                window.location.href = routeUrl;
-            }
         </script>
 
         <footer>
