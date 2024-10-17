@@ -5,7 +5,7 @@ Constructs with id and photo_url
 def test_constucts_with_fields():
     media = Media(1,"www.unsplash.com/testurl")
     assert media.id == 1
-    assert media.photo_url == "www.unsplash.com/testurl"
+    assert media.web_url == "www.unsplash.com/testurl"
     
 """
 When I construct two Medias with the same fields
