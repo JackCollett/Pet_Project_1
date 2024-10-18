@@ -23,4 +23,4 @@ Then it comes out in a friendly format
 """
 def test_formatting():
     media_1 = Media(1, "www.unsplash.com/testurl")
-    assert str(media_1) == "(1, www.unsplash.com/testurl)"
+    assert str(media_1) == "Media(1, www.unsplash.com/testurl)"

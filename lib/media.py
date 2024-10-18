@@ -8,4 +8,4 @@ class Media:
         return self.__dict__ == other.__dict__
 
     def __repr__(self):
-        return f"({self.id}, {self.web_url})"
+        return f"Media({self.id}, {self.web_url})"

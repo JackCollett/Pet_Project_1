@@ -1,10 +1,7 @@
 from lib.media_repository import MediaRepository
 from lib.media import Media
 import psycopg2, pytest
-'''
-When I call #all on the MediaRepository
-I get all the medias back in a list
-'''
+
 @pytest.fixture(scope='module')
 def conn():
     connection = psycopg2.connect(
@@ -23,7 +20,10 @@ def seed_database(conn, seed_file_path):
             sql = seed_file.read()
             cursor.execute(sql)
         conn.commit()
-
+'''
+When I call #all on the MediaRepository
+I get all the medias back in a list
+'''
 def test_list_all_medias(conn):
     seed_database(conn, "seeds/media_library.sql")
     repository = MediaRepository(conn)
@@ -33,3 +33,13 @@ def test_list_all_medias(conn):
         Media(2, "www.unsplash.test2"),
         Media(3, "www.unsplash.test3")
     ]
+
+'''
+When I call #find on the MediaRepository with an id
+I get the media corresponding to that id back
+'''
+def test_find(conn):
+    seed_database(conn, "seeds/media_library.sql")
+    repository = MediaRepository(conn)
+    result = repository.find(3)
+    assert result == Media(3, "www.unsplash.test3")

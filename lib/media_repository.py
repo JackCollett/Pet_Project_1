@@ -13,3 +13,11 @@ class MediaRepository():
             row = Media(row[0], row[1])
             medias.append(row)
         return medias
+    
+    def find(self, media_id):
+        cursor = self._connection.cursor()
+        cursor.execute(
+            'SELECT * FROM medias WHERE id = %s', [media_id]
+            )
+        results = cursor.fetchone()
+        return Media(results[0], results[1])

@@ -1,6 +1,7 @@
 from flask import Flask, redirect, render_template, request, session, url_for
 from flask_session import Session
 import os, requests, psycopg2
+from lib.media_repository import MediaRepository
 
 app = Flask(__name__)
 
@@ -8,8 +9,14 @@ app.config["SESSION_PERMENANT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-conn = psycopg2.connect(database="media", user="postgres", password="local", host="localhost", port="5432") 
+conn = psycopg2.connect(database="media", user="postgres", password="password6", host="localhost", port="5432") 
 
+media_repository = MediaRepository(conn)
+
+for media in media_repository.all():
+    print(media)
+    
+print(media_repository.find(2))
 # create a cursor 
 cur = conn.cursor() 
   
@@ -35,7 +42,7 @@ def index():
     # data = call.json()
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
-                            password="local", 
+                            password="password6", 
                             host="localhost", port="5432")
     # create a cursor 
     cur = conn.cursor() 
@@ -60,7 +67,7 @@ def edit():
 def create(): 
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
-                            password="local", 
+                            password="password6", 
                             host="localhost", port="5432") 
   
     cur = conn.cursor() 
@@ -88,7 +95,7 @@ def create():
 def update(): 
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
-                            password="local", 
+                            password="password6", 
                             host="localhost", port="5432") 
   
     cur = conn.cursor() 
@@ -111,7 +118,7 @@ def update():
 @app.route('/delete', methods=['POST']) 
 def delete(): 
     conn = psycopg2.connect(database="media", user="postgres", 
-     password="local", 
+     password="password6", 
      host="localhost", port="5432") 
     
     cur = conn.cursor() 
