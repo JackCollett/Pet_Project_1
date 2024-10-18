@@ -28,3 +28,10 @@ class MediaRepository():
             'INSERT INTO medias (web_url) VALUES (%s)', [media.web_url]
             )
         return None
+    
+    def delete(self, media_id):
+        cursor = self._connection.cursor()
+        cursor.execute(
+            'DELETE FROM medias WHERE id = %s', [media_id]
+            )
+        return None

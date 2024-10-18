@@ -63,3 +63,28 @@ def test_create(conn):
         Media(3, "www.unsplash.test3"),
         Media(4, "www.unsplash.test4")
     ]
+
+'''
+When I first call #all on Media Repository I see all records
+Then I call #delete on MediaRepository with an id
+And I get all the records
+Then the deleted record does not show up
+'''
+def test_delete(conn):
+    seed_database(conn, "seeds/media_library.sql")
+    repository = MediaRepository(conn)
+    
+    result = repository.all()
+    assert result == [
+        Media(1, "www.unsplash.test1"),
+        Media(2, "www.unsplash.test2"),
+        Media(3, "www.unsplash.test3")
+    ]
+    media_id = 2
+    assert repository.delete(media_id) == None
+    
+    result = repository.all()
+    assert result == [
+        Media(1, "www.unsplash.test1"),
+        Media(3, "www.unsplash.test3")
+    ]
