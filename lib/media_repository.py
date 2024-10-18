@@ -21,3 +21,10 @@ class MediaRepository():
             )
         results = cursor.fetchone()
         return Media(results[0], results[1])
+    
+    def create(self, media):
+        cursor = self._connection.cursor()
+        cursor.execute(
+            'INSERT INTO medias (web_url) VALUES (%s)', [media.web_url]
+            )
+        return None

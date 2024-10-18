@@ -43,3 +43,23 @@ def test_find(conn):
     repository = MediaRepository(conn)
     result = repository.find(3)
     assert result == Media(3, "www.unsplash.test3")
+    
+'''
+When I call #create on MediaRepository with some fields 
+And then I list out all of the records
+My new media is in the list
+'''
+def test_create(conn):
+    seed_database(conn, "seeds/media_library.sql")
+    repository = MediaRepository(conn)
+    
+    media = Media(None, "www.unsplash.test4")
+    assert repository.create(media) == None
+    
+    result = repository.all()
+    assert result == [
+        Media(1, "www.unsplash.test1"),
+        Media(2, "www.unsplash.test2"),
+        Media(3, "www.unsplash.test3"),
+        Media(4, "www.unsplash.test4")
+    ]
