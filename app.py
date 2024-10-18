@@ -2,6 +2,7 @@ from flask import Flask, redirect, render_template, request, session, url_for
 from flask_session import Session
 import os, requests, psycopg2
 from lib.media_repository import MediaRepository
+from lib.media import Media
 
 app = Flask(__name__)
 
@@ -61,6 +62,15 @@ def index():
 @app.route('/edit')
 def edit():
     image = request.args.get("image_url")
+    conn = psycopg2.connect(database="media", 
+                            user="postgres", 
+                            password="password6", 
+                            host="localhost", port="5432")
+    media_repository = MediaRepository(conn)
+    media = Media(None, image)
+    media_repository.create(media)
+    conn.commit()
+    conn.close() 
     return render_template("edit.html", name=session.get("name"), image=image)
 
 @app.route('/create', methods=['POST']) 
