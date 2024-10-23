@@ -3,14 +3,42 @@
 {% block body %}
 {% if name %}
 
-<div class="responsive">
-    <div class="gallery">
-        <a id="imageLink" href="#">
-            <img src="{{ image }}" alt="" id="unsplashImage">
-        </a>
+    <div class="responsive">
+        <div class="gallery">
+            <a id="imageLink" href="#">
+                <img src="{{ image }}" alt="" id="unsplashImage">
+            </a>
     </div>
 
+    <div class="controls">
+        <label for="rotate">Rotate: </label>
+        <button onclick="applyRotation()">Apply Rotation</button>
+    </div>
 
+    <script>
+        let currentRotation = 0;
+        function applyRotation() {
+            const image = document.getElementById("unsplashImage");
+            currentRotation += 90;
+            image.style.transform = `rotate(${currentRotation}deg)`;
+
+            fetch('/rotate_image', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ rotation: 90 }),  // Sending 90 degrees for each click
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Optionally, handle any response data (e.g., show success message)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
 <footer>
     You are logged in as {{ name }}. 
     <a href="/logout">Log out</a>.

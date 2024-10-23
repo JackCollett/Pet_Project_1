@@ -110,7 +110,7 @@
                         imageElement.src = jsonData[index].urls.regular;
 
                         imageElement.onclick = function() {
-                            let editUrl = "/edit?image_url=" + encodeURIComponent(jsonData[index].urls.regular);
+                            let editUrl = "/edit?image_url="+ encodeURIComponent(jsonData[index].urls.regular);
                             navigateTo(editUrl);
                         };
                     });

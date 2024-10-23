@@ -1,6 +1,6 @@
 from flask import Flask, redirect, render_template, request, session, url_for
 from flask_session import Session
-import os, requests, psycopg2
+import os, requests, psycopg2, json
 from lib.media_repository import MediaRepository
 from lib.media import Media
 
@@ -49,7 +49,7 @@ def index():
     cur = conn.cursor() 
   
     # Select all products from the table 
-    cur.execute('''SELECT * FROM products''') 
+    cur.execute('''SELECT * FROM products LIMIT 5''') 
   
     # Fetch the data 
     data = cur.fetchall() 
@@ -71,7 +71,27 @@ def edit():
     media_repository.create(media)
     conn.commit()
     conn.close() 
-    return render_template("edit.html", name=session.get("name"), image=image)
+
+    session['media'] = media.__dict__
+    print(session['media'])
+    return render_template("edit.html", name=session.get("name"), image=media.web_url)
+
+@app.route('/rotate_image', methods=['POST'])
+def rotate_image():
+    media_data = session.get('media')
+    if media_data:
+        media = Media(**media_data)
+    else:
+        return "No media loaded", 400
+    
+    data = request.json
+    rotation_degrees = int(data.get('rotation', 0))
+    media.apply_rotation(rotation_degrees)
+    
+    session['media'] = media.__dict__
+    print(media.__dict__)
+    
+    return json.dumps({"status": "success", "rotation": media.rotation}), 200
 
 @app.route('/create', methods=['POST']) 
 def create(): 
