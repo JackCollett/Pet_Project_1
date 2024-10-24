@@ -17,7 +17,6 @@ media_repository = MediaRepository(conn)
 for media in media_repository.all():
     print(media)
     
-print(media_repository.find(2))
 # create a cursor 
 cur = conn.cursor() 
   
@@ -68,7 +67,7 @@ def edit():
                             host="localhost", port="5432")
     media_repository = MediaRepository(conn)
     media = Media(None, image)
-    media_repository.create(media)
+    # media_repository.create(media)
     conn.commit()
     conn.close() 
 
@@ -93,32 +92,19 @@ def rotate_image():
     
     return json.dumps({"status": "success", "rotation": media.rotation}), 200
 
-@app.route('/create', methods=['POST']) 
-def create(): 
+@app.route('/save_media', methods=['GET', 'POST']) 
+def save(): 
+    media_data = session.get('media')
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
                             password="password6", 
-                            host="localhost", port="5432") 
-  
-    cur = conn.cursor() 
-  
-    # Get the data from the form 
-    name = request.form['name'] 
-    price = request.form['price'] 
-  
-    # Insert the data into the table 
-    cur.execute( 
-        '''INSERT INTO products (name, price) VALUES (%s, %s)''', 
-        (name, price)) 
-  
-    # commit the changes 
-    conn.commit() 
-  
-    # close the cursor and connection 
-    cur.close() 
+                            host="localhost", port="5432")
+    media_repository = MediaRepository(conn)
+    media = Media(None, media_data['web_url'], media_data['rotation'], media_data['brightness'])
+    media_repository.create(media)
+    conn.commit()
     conn.close() 
-  
-    return redirect(url_for('index')) 
+    return redirect('/')
   
   
 @app.route('/update', methods=['POST']) 

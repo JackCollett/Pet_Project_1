@@ -25,7 +25,7 @@ class MediaRepository():
     def create(self, media):
         cursor = self._connection.cursor()
         cursor.execute(
-            'INSERT INTO medias (web_url) VALUES (%s)', [media.web_url]
+            'INSERT INTO medias (web_url, rotation, brightness) VALUES (%s, %s, %s)', [media.web_url, media.rotation, media.brightness]
             )
         return None
     
