@@ -84,6 +84,7 @@ def rotate_image():
         return "No media loaded", 400
     
     data = request.json
+    print(data)
     rotation_degrees = int(data.get('rotation', 0))
     media.apply_rotation(rotation_degrees)
     
@@ -95,16 +96,24 @@ def rotate_image():
 @app.route('/save_media', methods=['GET', 'POST']) 
 def save(): 
     media_data = session.get('media')
+    if media_data:
+        media = Media(**media_data)
+    else:
+        return "No media loaded", 400
+    data = request.json
+    rotation_degrees = data.get('rotation')
+    brightness_value = data.get('brightness')
+    print(data)
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
                             password="password6", 
                             host="localhost", port="5432")
     media_repository = MediaRepository(conn)
-    media = Media(None, media_data['web_url'], media_data['rotation'], media_data['brightness'])
+    media = Media(None, media_data['web_url'], rotation_degrees, brightness_value)
     media_repository.create(media)
     conn.commit()
     conn.close() 
-    return redirect('/')
+    return redirect(url_for('index'))
   
   
 @app.route('/update', methods=['POST']) 

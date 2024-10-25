@@ -10,7 +10,8 @@ class MediaRepository():
         results = cursor.fetchall()
         medias = []
         for row in results: 
-            row = Media(row[0], row[1])
+            print(results)
+            row = Media(row[0], row[1], row[2], row[3])
             medias.append(row)
         return medias
     
@@ -20,7 +21,7 @@ class MediaRepository():
             'SELECT * FROM medias WHERE id = %s', [media_id]
             )
         results = cursor.fetchone()
-        return Media(results[0], results[1])
+        return Media(results[0], results[1], results[2], results[3])
     
     def create(self, media):
         cursor = self._connection.cursor()

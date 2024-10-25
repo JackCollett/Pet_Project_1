@@ -29,9 +29,9 @@ def test_list_all_medias(conn):
     repository = MediaRepository(conn)
     result = repository.all()
     assert result == [
-        Media(1, "www.unsplash.test1"),
-        Media(2, "www.unsplash.test2"),
-        Media(3, "www.unsplash.test3")
+        Media(1, "www.unsplash.test1", 0, 1),
+        Media(2, "www.unsplash.test2", 0, 1),
+        Media(3, "www.unsplash.test3", 0, 1)
     ]
 
 '''
@@ -42,7 +42,7 @@ def test_find(conn):
     seed_database(conn, "seeds/media_library.sql")
     repository = MediaRepository(conn)
     result = repository.find(3)
-    assert result == Media(3, "www.unsplash.test3")
+    assert result == Media(3, "www.unsplash.test3", 0, 1)
     
 '''
 When I call #create on MediaRepository with some fields 
@@ -58,10 +58,10 @@ def test_create(conn):
     
     result = repository.all()
     assert result == [
-        Media(1, "www.unsplash.test1"),
-        Media(2, "www.unsplash.test2"),
-        Media(3, "www.unsplash.test3"),
-        Media(4, "www.unsplash.test4")
+        Media(1, "www.unsplash.test1", 0, 1),
+        Media(2, "www.unsplash.test2", 0, 1),
+        Media(3, "www.unsplash.test3", 0, 1),
+        Media(4, "www.unsplash.test4", 0, 1)
     ]
 
 '''
@@ -76,15 +76,15 @@ def test_delete(conn):
     
     result = repository.all()
     assert result == [
-        Media(1, "www.unsplash.test1"),
-        Media(2, "www.unsplash.test2"),
-        Media(3, "www.unsplash.test3")
+        Media(1, "www.unsplash.test1", 0,),
+        Media(2, "www.unsplash.test2", 0,),
+        Media(3, "www.unsplash.test3", 0,)
     ]
     media_id = 2
     assert repository.delete(media_id) == None
     
     result = repository.all()
     assert result == [
-        Media(1, "www.unsplash.test1"),
-        Media(3, "www.unsplash.test3")
+        Media(1, "www.unsplash.test1", 0, 1),
+        Media(3, "www.unsplash.test3", 0, 1)
     ]

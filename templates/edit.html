@@ -3,31 +3,54 @@
 {% block body %}
 {% if name %}
 
-    <div class="responsive">
-        <div class="gallery">
-            <a id="imageLink" href="#">
-                <img src="{{ image }}" alt="" id="unsplashImage">
-            </a>
+    <div>
+        <a id="imageLink" href="#">
+            <img src="{{ image }}" alt="" class="center" id="unsplashImage">
+        </a>
     </div>
+
 
     <div class="controls">
         <label for="rotate">Rotate: </label>
         <button onclick="applyRotation()">Apply Rotation</button>
+        <div>
+        <label for="brightness">Brightness: </label>
+        <input type="range" min="0"
+                max="200" value="100"
+                class="slider"
+                id="brightnessSlider">
+        <button onclick="resetBrightness()">Reset</button>
+        </div>
+        <button onclick="saveMedia()">Save Image</button>
     </div>
 
     <script>
         let currentRotation = 0;
+        let brightnessValue = 100;
         function applyRotation() {
             const image = document.getElementById("unsplashImage");
             currentRotation += 90;
             image.style.transform = `rotate(${currentRotation}deg)`;
+        }
 
-            fetch('/rotate_image', {
+        const bSlider = document.getElementById('brightnessSlider');
+        const img = document.getElementById('unsplashImage');
+        bSlider.addEventListener('input', function () {
+            brightnessValue = this.value;
+            img.style.filter = `brightness(${brightnessValue}%)`;
+        });
+        function resetBrightness() {
+            brightnessValue = 100;
+            bSlider.value = 100;
+            img.style.filter = `brightness(${brightnessValue}%)`;
+        }
+        function saveMedia() {
+            fetch('/save_media', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ rotation: 90 }),  // Sending 90 degrees for each click
+                body: JSON.stringify({ rotation: currentRotation, brightness: brightnessValue }),
             })
             .then(response => response.json())
             .then(data => {
@@ -39,9 +62,7 @@
             });
         }
     </script>
-    <form action="/save_media" method="POST">
-        <button type="submit">Save Image</button>
-    </form>
+
 <footer>
     You are logged in as {{ name }}. 
     <a href="/logout">Log out</a>.
