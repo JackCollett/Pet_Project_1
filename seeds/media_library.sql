@@ -7,6 +7,6 @@ CREATE TABLE medias (
     brightness INTEGER
 );
 
-INSERT INTO medias (web_url, rotation, brightness) VALUES ('www.unsplash.test1', 0, 1);
-INSERT INTO medias (web_url, rotation, brightness) VALUES ('www.unsplash.test2', 0, 1);
-INSERT INTO medias (web_url, rotation, brightness) VALUES ('www.unsplash.test3', 0, 1);
+INSERT INTO medias (web_url, rotation, brightness) VALUES ('www.unsplash.test1', 0, 100);
+INSERT INTO medias (web_url, rotation, brightness) VALUES ('www.unsplash.test2', 0, 100);
+INSERT INTO medias (web_url, rotation, brightness) VALUES ('www.unsplash.test3', 0, 100);

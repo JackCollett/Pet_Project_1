@@ -14,8 +14,8 @@ conn = psycopg2.connect(database="media", user="postgres", password="password6",
 
 media_repository = MediaRepository(conn)
 
-for media in media_repository.all():
-    print(media)
+# for media in media_repository.all():
+#     print(media)
     
 # create a cursor 
 cur = conn.cursor() 
@@ -67,35 +67,34 @@ def edit():
                             host="localhost", port="5432")
     media_repository = MediaRepository(conn)
     media = Media(None, image)
-    # media_repository.create(media)
     conn.commit()
     conn.close() 
 
     session['media'] = media.__dict__
-    print(session['media'])
     return render_template("edit.html", name=session.get("name"), image=media.web_url)
 
-@app.route('/rotate_image', methods=['POST'])
-def rotate_image():
-    media_data = session.get('media')
-    if media_data:
-        media = Media(**media_data)
-    else:
-        return "No media loaded", 400
+# @app.route('/rotate_image', methods=['POST'])
+# def rotate_image():
+#     media_data = session.get('media')
+#     if media_data:
+#         media = Media(**media_data)
+#     else:
+#         return "No media loaded", 400
     
-    data = request.json
-    print(data)
-    rotation_degrees = int(data.get('rotation', 0))
-    media.apply_rotation(rotation_degrees)
+#     data = request.json
+#     print(data)
+#     rotation_degrees = int(data.get('rotation', 0))
+#     media.apply_rotation(rotation_degrees)
     
-    session['media'] = media.__dict__
-    print(media.__dict__)
+#     session['media'] = media.__dict__
+#     print(media.__dict__)
     
-    return json.dumps({"status": "success", "rotation": media.rotation}), 200
+#     return json.dumps({"status": "success", "rotation": media.rotation}), 200
 
 @app.route('/save_media', methods=['GET', 'POST']) 
 def save(): 
     media_data = session.get('media')
+    print(media_data)
     if media_data:
         media = Media(**media_data)
     else:
@@ -111,9 +110,10 @@ def save():
     media_repository = MediaRepository(conn)
     media = Media(None, media_data['web_url'], rotation_degrees, brightness_value)
     media_repository.create(media)
+    print(media)
     conn.commit()
     conn.close() 
-    return redirect(url_for('index'))
+    return json.dumps({"status": "success", "rotation": media.rotation, "brightness": media.brightness}), 200
   
   
 @app.route('/update', methods=['POST']) 

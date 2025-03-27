@@ -3,25 +3,31 @@
 {% block body %}
 {% if name %}
 
-    <div>
-        <a id="imageLink" href="#">
-            <img src="{{ image }}" alt="" class="center" id="unsplashImage">
-        </a>
-    </div>
-
-
-    <div class="controls">
-        <label for="rotate">Rotate: </label>
-        <button onclick="applyRotation()">Apply Rotation</button>
-        <div>
-        <label for="brightness">Brightness: </label>
-        <input type="range" min="0"
-                max="200" value="100"
-                class="slider"
-                id="brightnessSlider">
-        <button onclick="resetBrightness()">Reset</button>
+<header>
+    You are logged in as {{ name }}. 
+    <a href="/logout">Log out</a>.
+</header>
+    <div class="container">
+        <div class="image-container">
+            <a id="imageLink" href="#">
+                <img src="{{ image }}" alt="" class="center" id="unsplashImage">
+            </a>
         </div>
-        <button onclick="saveMedia()">Save Image</button>
+
+
+        <div class="controls">
+            <label for="rotate">Rotate: </label>
+            <button onclick="applyRotation()">Apply Rotation</button>
+            <div>
+            <label for="brightness">Brightness: </label>
+            <input type="range" min="0"
+                    max="200" value="100"
+                    class="slider"
+                    id="brightnessSlider">
+            <button onclick="resetBrightness()">Reset</button>
+            </div>
+            <button onclick="saveMedia()">Save Image</button>
+        </div>
     </div>
 
     <script>
@@ -43,6 +49,7 @@
             brightnessValue = 100;
             bSlider.value = 100;
             img.style.filter = `brightness(${brightnessValue}%)`;
+            img.style.transform = `rotate(${currentRotation - currentRotation}deg)`;
         }
         function saveMedia() {
             fetch('/save_media', {
@@ -63,10 +70,6 @@
         }
     </script>
 
-<footer>
-    You are logged in as {{ name }}. 
-    <a href="/logout">Log out</a>.
-</footer>
 {% else %}
 <h1>You are not logged in.</h1> <a href="/login">Log in</a>.
 {% endif %}
