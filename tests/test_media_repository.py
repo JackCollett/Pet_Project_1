@@ -25,7 +25,7 @@ When I call #all on the MediaRepository
 I get all the medias back in a list
 '''
 def test_list_all_medias(conn):
-    seed_database(conn, "seeds/media_library.sql")
+    seed_database(conn, "../seeds/media_library.sql")
     repository = MediaRepository(conn)
     result = repository.all()
     assert result == [
@@ -39,7 +39,7 @@ When I call #find on the MediaRepository with an id
 I get the media corresponding to that id back
 '''
 def test_find(conn):
-    seed_database(conn, "seeds/media_library.sql")
+    seed_database(conn, "../seeds/media_library.sql")
     repository = MediaRepository(conn)
     result = repository.find(3)
     assert result == Media(3, "www.unsplash.test3", 0, 100)
@@ -50,7 +50,7 @@ And then I list out all of the records
 My new media is in the list
 '''
 def test_create(conn):
-    seed_database(conn, "seeds/media_library.sql")
+    seed_database(conn, "../seeds/media_library.sql")
     repository = MediaRepository(conn)
     
     media = Media(None, "www.unsplash.test4")
@@ -71,7 +71,7 @@ And I get all the records
 Then the deleted record does not show up
 '''
 def test_delete(conn):
-    seed_database(conn, "seeds/media_library.sql")
+    seed_database(conn, "../seeds/media_library.sql")
     repository = MediaRepository(conn)
     
     result = repository.all()
