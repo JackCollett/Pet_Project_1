@@ -17,7 +17,10 @@
 
         <div class="controls">
             <label for="rotate">Rotate: </label>
-            <button onclick="applyRotation()">Apply Rotation</button>
+            <button onclick="applyRotation()">Apply Rotation</button><br>
+            <label for="skew">Skew: </label>
+            <button onClick="applySkew()">Skew left</button>
+            <button onClick="applySkew()">Skew right</button>
             <div>
             <label for="brightness">Brightness: </label>
             <input type="range" min="0"
@@ -33,10 +36,22 @@
     <script>
         let currentRotation = 0;
         let brightnessValue = 100;
+        let skewRight = true;
+
         function applyRotation() {
             const image = document.getElementById("unsplashImage");
             currentRotation += 90;
             image.style.transform = `rotate(${currentRotation}deg)`;
+        }
+        function applySkew() {
+            const image = document.getElementById("unsplashImage");
+            if (skewRight == true) {
+            image.style.transform = `matrix(1, 0.2, 0.2, 1, 20, 0) rotate(${currentRotation}deg)`;
+            skewRight = false;
+            } else {
+            image.style.transform = `matrix(1, -0.2, -0.2, 1, 20, 0) rotate(${currentRotation}deg)`;
+            skewRight = true;
+            }
         }
 
         const bSlider = document.getElementById('brightnessSlider');
