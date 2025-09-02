@@ -25,10 +25,34 @@ div.gallery {
     width: 90%;
   }
 
+  #canvas {
+    display: block;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+  }
+  
   .image-container, .controls {
     display: inline-block;
     vertical-align: middle; /* Aligns them at the middle */
     margin-right: 0px; /* Adds space between the two divs */
+  }
+
+  .image-gradient {
+    width: 400px;
+    height: 250px;
+    background-image: 
+      linear-gradient(rgba(110, 44, 44, 0.5), rgba(207, 199, 199, 0.5)),
+      url(style);                                   /* image */
+    background-size: cover;
+    background-position: center;
+  }
+
+  .image-gradient img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+    z-index: 1;
   }
   
   div.controls {

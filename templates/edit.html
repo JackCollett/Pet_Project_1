@@ -9,9 +9,8 @@
 </header>
     <div class="container">
         <div class="image-container">
-            <a id="imageLink" href="#">
-                <img src="{{ image }}" alt="" class="center" id="unsplashImage">
-            </a>
+            <canvas id="canvas" height="1000" width="600"></canvas>
+            <img src="{{ image }}" id="unsplashImage" style="display:none;">
         </div>
 
 
@@ -20,7 +19,9 @@
             <button onclick="applyRotation()">Apply Rotation</button><br>
             <label for="skew">Skew: </label>
             <button onClick="applySkew()">Skew left</button>
-            <button onClick="applySkew()">Skew right</button>
+            <button onClick="applySkew()">Skew right</button><br>
+            <label for="gradient">Gradient: </label>
+            <button onClick="addGradient()">Gradient</button>
             <div>
             <label for="brightness">Brightness: </label>
             <input type="range" min="0"
@@ -34,6 +35,21 @@
     </div>
 
     <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const image = document.getElementById("unsplashImage");
+
+        const drawImageOnCanvas = function() {
+            
+            context.drawImage(image, 0, 0);
+        };
+
+        if (image.complete) {
+            drawImageOnCanvas();
+        } else {
+            image.onload = drawImageOnCanvas;
+        }
+
         let currentRotation = 0;
         let brightnessValue = 100;
         let skewRight = true;
@@ -52,6 +68,10 @@
             image.style.transform = `matrix(1, -0.2, -0.2, 1, 20, 0) rotate(${currentRotation}deg)`;
             skewRight = true;
             }
+        }
+        function addGradient() {
+            const image = document.getElementById("unsplashImage");
+            
         }
 
         const bSlider = document.getElementById('brightnessSlider');
