@@ -18,16 +18,17 @@
             <label for="rotate">Rotate: </label>
             <button onclick="applyRotation()">Apply Rotation</button><br>
             <label for="skew">Skew: </label>
-            <button onClick="applySkew()">Skew left</button>
-            <button onClick="applySkew()">Skew right</button><br>
+            <button onClick="skewLeft()">Skew left</button>
+            <button onClick="skewRight()">Skew right</button><br>
             <label for="gradient">Gradient: </label>
             <button onClick="addGradient()">Gradient</button>
             <div>
-            <label for="brightness">Brightness: </label>
+            <label for="brightness" id="dynamicBrightness">Brightness: 100</label>
             <input type="range" min="0"
                     max="200" value="100"
                     class="slider"
-                    id="brightnessSlider">
+                    id="brightnessSlider"
+                    onchange="drawImageOnCanvas()"><br>
             <button onclick="resetBrightness()">Reset</button>
             </div>
             <button onclick="saveMedia()">Save Image</button>
@@ -39,6 +40,10 @@
         const context = canvas.getContext('2d');
         const image = document.getElementById("unsplashImage");
 
+        let brightnessSlider = document.getElementById("brightnessSlider");
+        let currentRotation = 0;
+        let skewNumbers = "1, 0, 0, 1, 0, 0";
+
         const drawImageOnCanvas = function() {
             let new_width = image.naturalWidth;
             let new_height = image.naturalHeight;
@@ -48,7 +53,10 @@
             }
             canvas.width = new_width;
             canvas.height = new_height;
-            console.log(new_height)
+
+            context.filter = "brightness(" + brightnessSlider.value + "%) ";
+            canvas.style.transform = "rotate(" + currentRotation + "deg) " +
+            "matrix(" + skewNumbers + ") ";
             context.drawImage(image, 0, 0, new_width, new_height);
         };
 
@@ -58,41 +66,37 @@
             image.onload = drawImageOnCanvas;
         }
 
-        let currentRotation = 0;
-        let brightnessValue = 100;
-        let skewRight = true;
-
         function applyRotation() {
-            const image = document.getElementById("unsplashImage");
-            currentRotation += 90;
-            image.style.transform = `rotate(${currentRotation}deg)`;
-        }
-        function applySkew() {
-            const image = document.getElementById("unsplashImage");
-            if (skewRight == true) {
-            image.style.transform = `matrix(1, 0.2, 0.2, 1, 20, 0) rotate(${currentRotation}deg)`;
-            skewRight = false;
-            } else {
-            image.style.transform = `matrix(1, -0.2, -0.2, 1, 20, 0) rotate(${currentRotation}deg)`;
-            skewRight = true;
+            if(currentRotation == 360){
+                currentRotation = 0
             }
+            currentRotation += 90;
+            drawImageOnCanvas();
         }
+
+        function skewLeft() {
+            skewNumbers = "1, 0.2, 0.2, 1, 20, 0";
+            drawImageOnCanvas();
+        }
+
+        function skewRight() {
+            skewNumbers = "1, -0.2, -0.2, 1, 20, 0";
+            drawImageOnCanvas();
+        }
+
         function addGradient() {
             const image = document.getElementById("unsplashImage");
             
         }
 
-        const bSlider = document.getElementById('brightnessSlider');
-        const img = document.getElementById('unsplashImage');
-        bSlider.addEventListener('input', function () {
-            brightnessValue = this.value;
-            img.style.filter = `brightness(${brightnessValue}%)`;
+        brightnessSlider.addEventListener('input', function () {
+            document.getElementById("dynamicBrightness").innerText = "Brightness: " + brightnessSlider.value;
         });
+
         function resetBrightness() {
-            brightnessValue = 100;
-            bSlider.value = 100;
-            img.style.filter = `brightness(${brightnessValue}%)`;
-            img.style.transform = `rotate(${currentRotation - currentRotation}deg)`;
+            brightnessSlider.value = 100;
+            document.getElementById("dynamicBrightness").innerText = "Brightness: " + brightnessSlider.value;
+            drawImageOnCanvas();
         }
         function saveMedia() {
             fetch('/save_media', {

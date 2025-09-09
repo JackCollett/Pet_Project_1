@@ -66,12 +66,18 @@ def edit():
                             password="password6", 
                             host="localhost", port="5432")
     media_repository = MediaRepository(conn)
+    
+    # creating instance of media clicked
     media = Media(None, image)
+    media_repository.create(media)
+    
     conn.commit()
     conn.close() 
 
     session['media'] = media.__dict__
-    return render_template("edit.html", name=session.get("name"), image=media.web_url)
+    return render_template("edit.html", 
+                           name=session.get("name"), 
+                           image=media.web_url)
 
 # @app.route('/rotate_image', methods=['POST'])
 # def rotate_image():
