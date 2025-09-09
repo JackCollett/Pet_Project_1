@@ -22,13 +22,15 @@
             <button onClick="skewRight()">Skew right</button><br>
             <label for="gradient">Gradient: </label>
             <button onClick="addGradient()">Gradient</button>
+            <input type="color" id="primary" value="#e66465"/>
+            <input type="color" id="secondary" value="#000000"/>
             <div>
             <label for="brightness" id="dynamicBrightness">Brightness: 100</label>
             <input type="range" min="0"
                     max="200" value="100"
                     class="slider"
                     id="brightnessSlider"
-                    onchange="drawImageOnCanvas()"><br>
+                    onchange="drawImageOnCanvas()">
             <button onclick="resetBrightness()">Reset</button>
             </div>
             <button onclick="saveMedia()">Save Image</button>
@@ -43,6 +45,9 @@
         let brightnessSlider = document.getElementById("brightnessSlider");
         let currentRotation = 0;
         let skewNumbers = "1, 0, 0, 1, 0, 0";
+        let gradient = false;
+        let color_1 = "#e66465";
+        let color_2 = "#000000";
 
         const drawImageOnCanvas = function() {
             let new_width = image.naturalWidth;
@@ -58,6 +63,15 @@
             canvas.style.transform = "rotate(" + currentRotation + "deg) " +
             "matrix(" + skewNumbers + ") ";
             context.drawImage(image, 0, 0, new_width, new_height);
+
+            if (gradient == true) {
+                const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+                gradient.addColorStop(0, color_1);   
+                gradient.addColorStop(1, color_2);
+                context.globalCompositeOperation = 'overlay';
+                context.fillStyle = gradient;
+                context.fillRect(0, 0, canvas.width, canvas.height);                   
+            }
         };
 
         if (image.complete) {
@@ -85,8 +99,21 @@
         }
 
         function addGradient() {
-            const image = document.getElementById("unsplashImage");
-            
+            if (gradient == false){
+            gradient = true;
+            primary.addEventListener("input", function () {
+                color_1 = this.value;
+                drawImageOnCanvas();
+            })
+            secondary.addEventListener("input", function () {
+                color_2 = this.value;
+                drawImageOnCanvas();
+            })
+            drawImageOnCanvas();
+            } else {
+                gradient = false;
+                drawImageOnCanvas();
+            }
         }
 
         brightnessSlider.addEventListener('input', function () {
