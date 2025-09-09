@@ -75,6 +75,7 @@ def edit():
     conn.close() 
 
     session['media'] = media.__dict__
+    print(f"New Media ID: {media.id}")
     return render_template("edit.html", 
                            name=session.get("name"), 
                            image=media.web_url)
@@ -99,27 +100,24 @@ def edit():
 
 @app.route('/save_media', methods=['GET', 'POST']) 
 def save(): 
+    
     media_data = session.get('media')
-    print(media_data)
-    if media_data:
-        media = Media(**media_data)
-    else:
-        return "No media loaded", 400
     data = request.json
     rotation_degrees = data.get('rotation')
     brightness_value = data.get('brightness')
-    print(data)
+
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
                             password="password6", 
                             host="localhost", port="5432")
-    media_repository = MediaRepository(conn)
-    media = Media(None, media_data['web_url'], rotation_degrees, brightness_value)
-    media_repository.create(media)
-    print(media)
-    conn.commit()
-    conn.close() 
-    return json.dumps({"status": "success", "rotation": media.rotation, "brightness": media.brightness}), 200
+    if media_data:
+        media_repository = MediaRepository(conn)
+        media_repository.update(media_data["id"], rotation_degrees, brightness_value)
+        conn.commit()
+        conn.close() 
+    else:
+        return "No media loaded", 400
+    return json.dumps({"status": "success", "rotation": rotation_degrees, "brightness": brightness_value}), 200
   
   
 @app.route('/update', methods=['POST']) 

@@ -131,7 +131,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ rotation: currentRotation, brightness: brightnessValue }),
+                body: JSON.stringify({ rotation: currentRotation, brightness: brightnessSlider.value }),
             })
             .then(response => response.json())
             .then(data => {
