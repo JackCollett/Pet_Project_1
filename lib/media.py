@@ -1,13 +1,16 @@
 class Media:
 
-    def __init__(self, id, web_url, rotation=0, brightness=100):
+    def __init__(self, id, web_url, creator, rotation=0, brightness=100, skew="1, 0, 0, 1, 0, 0", gradient="#e66465, #000000"):
         self.id = id
+        self.creator = creator
         self.web_url = web_url
         self.rotation = rotation
         self.brightness = brightness
+        self.skew = skew
+        self.gradient = gradient
 
     def __eq__(self, other):
         return self.__dict__ == other.__dict__
 
     def __repr__(self):
-        return f"Media({self.id}, {self.web_url}, {self.rotation}, {self.brightness})"
+        return f"Media({self.id}, {self.creator}, {self.web_url}, {self.rotation}, {self.brightness}, {self.skew}, {self.gradient})"

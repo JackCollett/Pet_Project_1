@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block body %}
+{% if name %}
+
+<header>
+    You are logged in as {{ name }}. 
+    <a href="/logout">Log out</a>.
+</header>
+
+<script>
+    function drawImageOnCanvas(canvasID, imageID, brightnessSlider, currentRotation, skewNumbers, color_1) {
+        const canvas = document.getElementById(canvasID);
+        const context = canvas.getContext('2d');
+        const image = document.getElementById(imageID);
+
+        var new_width = image.naturalWidth;
+        var new_height = image.naturalHeight;
+        if (image.naturalHeight >= 1620 || image.naturalWidth >= 1000) {
+        new_width = image.naturalWidth * 0.5;
+        new_height = image.naturalHeight * 0.5;
+        }
+        canvas.width = new_width;
+        canvas.height = new_height;
+        console.log("brightness(" + brightnessSlider + "%) ");
+        console.log("rotate(" + currentRotation + "deg) " + "matrix(" + skewNumbers + ") ");
+        context.filter = "brightness(" + brightnessSlider + "%) ";
+        canvas.style.transform = "rotate(" + currentRotation + "deg) " +
+        "matrix(" + skewNumbers + ") ";
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    };
+</script>
+
+        
+{% for image in library %} 
+<div class="image-container">
+    <canvas id="canvas{{ image[0] }}" height="500" width="600"></canvas>
+    <img src="{{ image[1] }}" id="image{{ image[0] }}" style="display:none;">
+</div>
+<script>
+    var brightnessSlider = "{{ image[4] }}";
+    console.log(brightnessSlider)
+    var currentRotation = "{{ image[3] }}";
+    var skewNumbers = "{{ image[5] }}";
+    var color_1 = "{{ image[6] }}";
+    var color_2 = "#000000";
+    drawImageOnCanvas("canvas{{ image[0] }}", "image{{ image[0] }}", 
+    brightnessSlider, currentRotation, skewNumbers, color_1)
+</script>
+
+{% endfor %} 
+    
+
+{% else %}
+<h1>You are not logged in.</h1> <a href="/login">Log in</a>.
+{% endif %}
+
+{% endblock %}

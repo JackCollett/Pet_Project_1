@@ -12,8 +12,7 @@
             <canvas id="canvas" height="1000" width="600"></canvas>
             <img src="{{ image }}" id="unsplashImage" style="display:none;">
         </div>
-
-
+        
         <div class="controls">
             <label for="rotate">Rotate: </label>
             <button onclick="applyRotation()">Apply Rotation</button><br>
@@ -35,6 +34,11 @@
             </div>
             <button onclick="saveMedia()">Save Image</button>
         </div>
+    </div>
+    <div>
+        <a href="/library">
+        <button>Your Library</button>
+        </a>
     </div>
 
     <script>
@@ -131,7 +135,10 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ rotation: currentRotation, brightness: brightnessSlider.value }),
+                body: JSON.stringify({ rotation: currentRotation, 
+                    brightness: brightnessSlider.value,
+                    skew: skewNumbers,
+                    gradient: color_1 }),
             })
             .then(response => response.json())
             .then(data => {

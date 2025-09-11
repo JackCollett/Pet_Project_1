@@ -31,6 +31,15 @@ cur.execute(
   
 # commit the changes 
 conn.commit() 
+
+with open("seeds/media_library.sql", 'r') as seed_file:
+    sql = seed_file.read()
+    statements = sql.split(";")
+    for statement in statements:
+        statement = statement.strip()
+        if statement:
+            cur.execute(statement)
+conn.commit()
   
 # close the cursor and connection 
 cur.close() 
@@ -46,7 +55,7 @@ def index():
                             host="localhost", port="5432")
     # create a cursor 
     cur = conn.cursor() 
-  
+    
     # Select all products from the table 
     cur.execute('''SELECT * FROM products LIMIT 5''') 
   
@@ -61,6 +70,8 @@ def index():
 @app.route('/edit')
 def edit():
     image = request.args.get("image_url")
+    creator = session.get("name")
+    print(creator)
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
                             password="password6", 
@@ -68,18 +79,29 @@ def edit():
     media_repository = MediaRepository(conn)
     
     # creating instance of media clicked
-    media = Media(None, image)
+    media = Media(None, image, creator)
     media_repository.create(media)
     
     conn.commit()
     conn.close() 
-
     session['media'] = media.__dict__
+    print(session['media'])
     print(f"New Media ID: {media.id}")
     return render_template("edit.html", 
-                           name=session.get("name"), 
+                           name=creator, 
                            image=media.web_url)
-
+    
+@app.route('/library')
+def library():
+    creator = session.get("name")
+    conn = psycopg2.connect(database="media", 
+                            user="postgres", 
+                            password="password6", 
+                            host="localhost", port="5432")
+    media_repository = MediaRepository(conn)
+    media = media_repository.find(creator) # find all users saved images (could be any number)
+    print(type(media[0]))
+    return render_template("library.html", name=creator, library=media)
 # @app.route('/rotate_image', methods=['POST'])
 # def rotate_image():
 #     media_data = session.get('media')
@@ -101,10 +123,18 @@ def edit():
 @app.route('/save_media', methods=['GET', 'POST']) 
 def save(): 
     
+    creator = session.get("name")
     media_data = session.get('media')
     data = request.json
     rotation_degrees = data.get('rotation')
-    brightness_value = data.get('brightness')
+    brightness_value = int(data.get('brightness'))
+    skew_numbers = data.get('skew')
+    gradient_colors = data.get('gradient')
+    print(skew_numbers)
+    print(gradient_colors)
+    print(brightness_value)
+    print(gradient_colors)
+
 
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
@@ -112,7 +142,8 @@ def save():
                             host="localhost", port="5432")
     if media_data:
         media_repository = MediaRepository(conn)
-        media_repository.update(media_data["id"], rotation_degrees, brightness_value)
+        media_repository.update(media_data["id"], rotation_degrees, brightness_value, skew_numbers, gradient_colors)
+        print(media_repository.find(creator))
         conn.commit()
         conn.close() 
     else:

@@ -11,33 +11,33 @@ class MediaRepository():
         medias = []
         for row in results: 
             print(results)
-            row = Media(row[0], row[1], row[2], row[3])
+            row = Media(row[0], row[1], row[2], row[3], row[4])
             medias.append(row)
         return medias
     
-    def find(self, media_id):
+    def find(self, creator):
         cursor = self._connection.cursor()
         cursor.execute(
-            'SELECT * FROM medias WHERE id = %s', [media_id]
+            'SELECT * FROM medias WHERE creator = %s', [creator]
             )
-        results = cursor.fetchone()
-        return Media(results[0], results[1], results[2], results[3])
+        results = cursor.fetchall()
+        return results
     
     def create(self, media):
         cursor = self._connection.cursor()
         cursor.execute(
-            'INSERT INTO medias (web_url, rotation, brightness) VALUES (%s, %s, %s) RETURNING id', 
-            [media.web_url, media.rotation, media.brightness])
+            'INSERT INTO medias (web_url, creator, rotation, brightness, skew, gradient) VALUES (%s, %s, %s, %s, %s, %s) RETURNING id', 
+            (media.web_url, media.creator, media.rotation, media.brightness, media.skew, media.gradient))
         new_id = cursor.fetchone()[0]
         media.id = new_id
         return media
     
-    def update(self, media_id, rotation, brightness):
+    def update(self, media_id, rotation, brightness, skew, gradient):
         cursor = self._connection.cursor()
         cursor.execute(
-            'UPDATE medias SET rotation = (%s), brightness = (%s) WHERE id = (%s)', 
-            (rotation, brightness, media_id)
-        )
+            'UPDATE medias SET rotation = (%s), brightness = (%s), skew = (%s), gradient = (%s) WHERE id = (%s)', 
+            (rotation, brightness, skew, gradient, media_id))
+        return None
     
     def delete(self, media_id):
         cursor = self._connection.cursor()
