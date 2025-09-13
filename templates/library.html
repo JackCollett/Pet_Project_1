@@ -10,7 +10,7 @@
 </header>
 
 <script>
-    function drawImageOnCanvas(canvasID, imageID, brightnessSlider, currentRotation, skewNumbers, color_1) {
+    function drawImageOnCanvas(canvasID, imageID, brightnessSlider, currentRotation, skewNumbers, gradient, gradient_colors) {
         const canvas = document.getElementById(canvasID);
         const context = canvas.getContext('2d');
         const image = document.getElementById(imageID);
@@ -28,6 +28,19 @@
         context.filter = "brightness(" + brightnessSlider + "%) ";
         canvas.style.transform = "rotate(" + currentRotation + "deg) " +
         "matrix(" + skewNumbers + ") ";
+
+        // add gradient
+        if (gradient == "True") {
+        const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+        color_1 = gradient_colors.slice(0, 7);
+        color_2 = gradient_colors.slice(7);
+        console.log(color_1, color_2)
+        gradient.addColorStop(0, color_1);   
+        gradient.addColorStop(1, color_2);
+        context.globalCompositeOperation = 'overlay';
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, canvas.width, canvas.height);     
+        }
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
     };
 </script>
@@ -40,13 +53,14 @@
 </div>
 <script>
     var brightnessSlider = "{{ image[4] }}";
-    console.log(brightnessSlider)
     var currentRotation = "{{ image[3] }}";
     var skewNumbers = "{{ image[5] }}";
-    var color_1 = "{{ image[6] }}";
-    var color_2 = "#000000";
+    var gradient = "{{ image[6] }}";
+    var gradient_colors = "{{ image[7] }}";
+    console.log(typeof gradient);
+
     drawImageOnCanvas("canvas{{ image[0] }}", "image{{ image[0] }}", 
-    brightnessSlider, currentRotation, skewNumbers, color_1)
+    brightnessSlider, currentRotation, skewNumbers, gradient, gradient_colors)
 </script>
 
 {% endfor %} 

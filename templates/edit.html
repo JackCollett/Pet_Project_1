@@ -138,7 +138,8 @@
                 body: JSON.stringify({ rotation: currentRotation, 
                     brightness: brightnessSlider.value,
                     skew: skewNumbers,
-                    gradient: color_1 }),
+                    gradient: gradient,
+                    gradient_colors: color_1+color_2 }),
             })
             .then(response => response.json())
             .then(data => {

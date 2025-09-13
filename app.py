@@ -32,6 +32,7 @@ cur.execute(
 # commit the changes 
 conn.commit() 
 
+
 with open("seeds/media_library.sql", 'r') as seed_file:
     sql = seed_file.read()
     statements = sql.split(";")
@@ -94,13 +95,15 @@ def edit():
 @app.route('/library')
 def library():
     creator = session.get("name")
+    media = []
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
                             password="password6", 
                             host="localhost", port="5432")
     media_repository = MediaRepository(conn)
     media = media_repository.find(creator) # find all users saved images (could be any number)
-    print(type(media[0]))
+    if len(media) >= 1:
+        print(type(media[0][-2]))
     return render_template("library.html", name=creator, library=media)
 # @app.route('/rotate_image', methods=['POST'])
 # def rotate_image():
@@ -129,12 +132,11 @@ def save():
     rotation_degrees = data.get('rotation')
     brightness_value = int(data.get('brightness'))
     skew_numbers = data.get('skew')
-    gradient_colors = data.get('gradient')
+    gradient = data.get('gradient')
+    gradient_colors = data.get('gradient_colors')
     print(skew_numbers)
     print(gradient_colors)
     print(brightness_value)
-    print(gradient_colors)
-
 
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
@@ -142,7 +144,7 @@ def save():
                             host="localhost", port="5432")
     if media_data:
         media_repository = MediaRepository(conn)
-        media_repository.update(media_data["id"], rotation_degrees, brightness_value, skew_numbers, gradient_colors)
+        media_repository.update(media_data["id"], rotation_degrees, brightness_value, skew_numbers, gradient, gradient_colors)
         print(media_repository.find(creator))
         conn.commit()
         conn.close() 

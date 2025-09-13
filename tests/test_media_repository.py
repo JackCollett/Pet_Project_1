@@ -29,9 +29,9 @@ def test_list_all_medias(conn):
     repository = MediaRepository(conn)
     result = repository.all()
     assert result == [
-        Media(1, "www.unsplash.test1", 0, 100),
-        Media(2, "www.unsplash.test2", 0, 100),
-        Media(3, "www.unsplash.test3", 0, 100)
+        Media(1, 'www.unsplash.test1', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'), 
+        Media(2, 'www.unsplash.test3', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'),
+        Media(3, 'www.unsplash.test2', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'), 
     ]
 
 '''
@@ -41,9 +41,12 @@ I get the media corresponding to that id back
 def test_find(conn):
     seed_database(conn, "../seeds/media_library.sql")
     repository = MediaRepository(conn)
-    result = repository.find(3)
-    assert result == Media(3, "www.unsplash.test3", 0, 100)
-    
+    result = repository.find("Dr Doom")
+    assert result == [
+        (1, 'www.unsplash.test1', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'), 
+        (2, 'www.unsplash.test3', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'),
+        (3, 'www.unsplash.test2', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'), 
+    ]
 '''
 When I call #create on MediaRepository with some fields 
 And then I list out all of the records
@@ -53,15 +56,16 @@ def test_create(conn):
     seed_database(conn, "../seeds/media_library.sql")
     repository = MediaRepository(conn)
     
-    media = Media(None, "www.unsplash.test4")
-    assert repository.create(media) == None
-    
+    media = Media(None, "www.unsplash.test4", "Silver Surfer")
+    # assert repository.create(media) == None
+    print(media)
+    repository.create(media)
     result = repository.all()
     assert result == [
-        Media(1, "www.unsplash.test1", 0, 100),
-        Media(2, "www.unsplash.test2", 0, 100),
-        Media(3, "www.unsplash.test3", 0, 100),
-        Media(4, "www.unsplash.test4", 0, 100)
+        Media(1, 'www.unsplash.test1', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'), 
+        Media(2, 'www.unsplash.test3', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'),
+        Media(3, 'www.unsplash.test2', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'), 
+        Media(4, 'www.unsplash.test4', 'Silver Surfer', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000')        
     ]
 
 '''
@@ -76,15 +80,15 @@ def test_delete(conn):
     
     result = repository.all()
     assert result == [
-        Media(1, "www.unsplash.test1", 0, 100),
-        Media(2, "www.unsplash.test2", 0, 100),
-        Media(3, "www.unsplash.test3", 0, 100)
+        Media(1, 'www.unsplash.test1', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'), 
+        Media(2, 'www.unsplash.test3', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'),
+        Media(3, 'www.unsplash.test2', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000')
     ]
     media_id = 2
     assert repository.delete(media_id) == None
     
     result = repository.all()
     assert result == [
-        Media(1, "www.unsplash.test1", 0, 100),
-        Media(3, "www.unsplash.test3", 0, 100)
+        Media(1, 'www.unsplash.test1', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'), 
+        Media(3, 'www.unsplash.test2', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000')
     ]
