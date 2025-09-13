@@ -4,6 +4,7 @@
 {% if name %}
 
 <header>
+    <h1>Your Library</h1>
     You are logged in as {{ name }}. 
     <a href="/logout">Log out</a>.
 </header>
@@ -31,9 +32,9 @@
     };
 </script>
 
-        
+<div class="gallery">
 {% for image in library %} 
-<div class="image-container">
+<div class="gallery-item">
     <canvas id="canvas{{ image[0] }}" height="500" width="600"></canvas>
     <img src="{{ image[1] }}" id="image{{ image[0] }}" style="display:none;">
 </div>
@@ -49,7 +50,7 @@
 </script>
 
 {% endfor %} 
-    
+</div>    
 
 {% else %}
 <h1>You are not logged in.</h1> <a href="/login">Log in</a>.
