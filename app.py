@@ -60,25 +60,19 @@ def index():
 def edit():
     image = request.args.get("image_url")
     creator = session.get("name")
-    print(creator)
+    session['media'] = image
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
                             password="password6", 
                             host="localhost", port="5432")
     media_repository = MediaRepository(conn)
     
-    # creating instance of media clicked
-    media = Media(None, image, creator)
-    media_repository.create(media)
     
     conn.commit()
     conn.close() 
-    session['media'] = media.__dict__
-    print(session['media'])
-    print(f"New Media ID: {media.id}")
     return render_template("edit.html", 
                            name=creator, 
-                           image=media.web_url)
+                           image=image)
     
 @app.route('/library')
 def library():
@@ -116,15 +110,13 @@ def save():
     
     creator = session.get("name")
     media_data = session.get('media')
+    print(media_data)
     data = request.json
     rotation_degrees = data.get('rotation')
     brightness_value = int(data.get('brightness'))
     skew_numbers = data.get('skew')
     gradient = data.get('gradient')
     gradient_colors = data.get('gradient_colors')
-    print(skew_numbers)
-    print(gradient_colors)
-    print(brightness_value)
 
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
@@ -132,8 +124,13 @@ def save():
                             host="localhost", port="5432")
     if media_data:
         media_repository = MediaRepository(conn)
-        media_repository.update(media_data["id"], rotation_degrees, brightness_value, skew_numbers, gradient, gradient_colors)
-        print(media_repository.find(creator))
+        new_media = Media(None, 
+                          media_data, 
+                          creator,
+                          rotation_degrees, brightness_value, skew_numbers, gradient, gradient_colors)
+        print(new_media.__dict__)
+        media_repository.create(new_media)
+        # media_repository.update(media_data["id"], rotation_degrees, brightness_value, skew_numbers, gradient, gradient_colors)
         conn.commit()
         conn.close() 
     else:

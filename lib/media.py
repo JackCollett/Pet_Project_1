@@ -2,8 +2,8 @@ class Media:
 
     def __init__(self, id, web_url, creator, rotation=0, brightness=100, skew="1, 0, 0, 1, 0, 0", gradient=False, gradient_colors="#e66465, #000000"):
         self.id = id
-        self.creator = creator
         self.web_url = web_url
+        self.creator = creator
         self.rotation = rotation
         self.brightness = brightness
         self.skew = skew
