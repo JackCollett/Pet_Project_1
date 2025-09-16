@@ -33,18 +33,6 @@ cur.execute(
 conn.commit() 
 
 
-with open("seeds/media_library.sql", 'r') as seed_file:
-    sql = seed_file.read()
-    statements = sql.split(";")
-    for statement in statements:
-        statement = statement.strip()
-        if statement:
-            cur.execute(statement)
-conn.commit()
-  
-# close the cursor and connection 
-cur.close() 
-conn.close() 
 
 @app.route("/")
 def index():

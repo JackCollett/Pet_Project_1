@@ -23,26 +23,28 @@
         }
         canvas.width = new_width;
         canvas.height = new_height;
-        console.log("brightness(" + brightnessSlider + "%) ");
-        console.log("rotate(" + currentRotation + "deg) " + "matrix(" + skewNumbers + ") ");
         context.filter = "brightness(" + brightnessSlider + "%) ";
         canvas.style.transform = "rotate(" + currentRotation + "deg) " +
         "matrix(" + skewNumbers + ") ";
-
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
         // add gradient
         if (gradient == "True") {
         const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
         color_1 = gradient_colors.slice(0, 7);
         color_2 = gradient_colors.slice(7);
-        console.log(color_1, color_2)
         gradient.addColorStop(0, color_1);   
         gradient.addColorStop(1, color_2);
         context.globalCompositeOperation = 'overlay';
         context.fillStyle = gradient;
         context.fillRect(0, 0, canvas.width, canvas.height);     
         }
-        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        
     };
+    if (image.complete) {
+        drawImageOnCanvas();
+    } else {
+        image.onload = drawImageOnCanvas;
+    }
 </script>
 
 <div class="gallery">
