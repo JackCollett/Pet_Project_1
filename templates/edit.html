@@ -9,7 +9,7 @@
 </header>
     <div class="container">
         <div class="image-container">
-            <canvas id="canvas" height="1000" width="600"></canvas>
+            <canvas id="canvas" height="500" width="300"></canvas>
             <img src="{{ image }}" id="unsplashImage" style="display:none;">
         </div>
         
@@ -17,10 +17,11 @@
             <label for="rotate">Rotate: </label>
             <button onclick="applyRotation()">Apply Rotation</button><br>
             <label for="skew">Skew: </label>
-            <button onClick="skewLeft()">Skew left</button>
-            <button onClick="skewRight()">Skew right</button><br>
+            <button id="toggle" class="skewon" onclick="Skew()">Skew</button>
+            <button onClick="skewLeft()">Left</button>
+            <button onClick="skewRight()">Right</button><br>
             <label for="gradient">Gradient: </label>
-            <button onClick="addGradient()">Gradient</button>
+            <button id="toggle2" class="gradientToggle" onClick="addGradient()">Gradient</button>
             <input type="color" id="primary" value="#e66465"/>
             <input type="color" id="secondary" value="#000000"/>
             <div>
@@ -48,6 +49,7 @@
 
         let brightnessSlider = document.getElementById("brightnessSlider");
         let currentRotation = 0;
+        let skewOn = false;
         let skewNumbers = "1, 0, 0, 1, 0, 0";
         let gradient = false;
         let color_1 = "#e66465";
@@ -95,18 +97,39 @@
             currentRotation += 90;
             drawImageOnCanvas();
         }
+        function Skew() {
+            const btn = document.getElementById('toggle');
+            btn.classList.toggle('active');
 
-        function skewLeft() {
+            if (skewOn == false) {
             skewNumbers = "1, 0.2, 0.2, 1, 20, 0";
             drawImageOnCanvas();
+            skewOn = true;
+            } else {
+                skewNumbers = "1, 0, 0, 1, 0, 0";
+                drawImageOnCanvas();
+                skewOn = false;
+            }
+        }
+
+        function skewLeft() {
+            if ( skewOn = true ) {
+            skewNumbers = "1, 0.2, 0.2, 1, 20, 0";
+            drawImageOnCanvas();
+            }
         }
 
         function skewRight() {
+        if ( skewOn = true ) {
             skewNumbers = "1, -0.2, -0.2, 1, 20, 0";
             drawImageOnCanvas();
         }
+        }
 
         function addGradient() {
+            const btn = document.getElementById('toggle2');
+            btn.classList.toggle('active');
+
             if (gradient == false){
             gradient = true;
             primary.addEventListener("input", function () {

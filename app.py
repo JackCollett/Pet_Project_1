@@ -69,7 +69,7 @@ def edit():
                             host="localhost", port="5432")
     media_repository = MediaRepository(conn)
     
-    
+    print(image)
     conn.commit()
     conn.close() 
     return render_template("edit.html", 

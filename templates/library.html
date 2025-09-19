@@ -40,38 +40,48 @@
         }
         
     };
-    if (image.complete) {
-        drawImageOnCanvas();
-    } else {
-        image.onload = drawImageOnCanvas;
-    }
 </script>
 
 <div class="gallery">
 {% for image in library %} 
 <div class="gallery-item">
-    <canvas id="canvas{{ image[0] }}" height="500" width="600" onclick="edit()"></canvas>
+    <canvas 
+        id="canvas{{ image[0] }}" 
+        data-url="{{ image[1] }}"
+        height="500" 
+        width="600">
+    </canvas>
     <img src="{{ image[1] }}" id="image{{ image[0] }}" style="display:none;">
 </div>
+{% endfor %} 
 <script>
-    var brightnessSlider = "{{ image[4] }}";
-    var currentRotation = "{{ image[3] }}";
-    var skewNumbers = "{{ image[5] }}";
-    var gradient = "{{ image[6] }}";
-    var gradient_colors = "{{ image[7] }}";
-    console.log(typeof gradient);
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvases = document.querySelectorAll('.gallery canvas');
 
-    drawImageOnCanvas("canvas{{ image[0] }}", "image{{ image[0] }}", 
-    brightnessSlider, currentRotation, skewNumbers, gradient, gradient_colors)
+        canvases.forEach((canvas) => {
+            const imageId = canvas.id.replace('canvas', 'image');
+            const image = document.getElementById(imageId);
 
-    function edit() { 
-        let image_url = " {{ image[1] }} "
-        let editUrl = "/edit?image_url="+ encodeURIComponent(image_url);
-        window.location.assign(editUrl);
-    }
+            drawImageOnCanvas(canvas.id, image.id, 
+                canvas.dataset.brightness, 
+                canvas.dataset.rotation, 
+                canvas.dataset.skew, 
+                canvas.dataset.gradient, 
+                canvas.dataset.gradient_colors
+                );
+                
+            console.log(canvas.dataset)
+
+            canvas.addEventListener('click', () => {
+                const imageUrl = canvas.dataset.url;
+                const editUrl = '/edit?image_url=' + encodeURIComponent(imageUrl);
+                window.location.assign(editUrl);
+            });
+        });
+    });
+
 </script>
 
-{% endfor %} 
 </div>    
 
 {% else %}
