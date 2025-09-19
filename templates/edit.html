@@ -56,12 +56,16 @@
         const drawImageOnCanvas = function() {
             let new_width = image.naturalWidth;
             let new_height = image.naturalHeight;
+            console.log(new_height, new_width)
             if (image.naturalHeight >= 1620 || image.naturalWidth >= 1000) {
             new_width = image.naturalWidth * 0.5;
             new_height = image.naturalHeight * 0.5;
+            console.log(new_height, new_width)
+
             }
             canvas.width = new_width;
             canvas.height = new_height;
+
 
             context.filter = "brightness(" + brightnessSlider.value + "%) ";
             canvas.style.transform = "rotate(" + currentRotation + "deg) " +

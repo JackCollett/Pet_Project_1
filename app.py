@@ -59,8 +59,10 @@ def index():
 @app.route('/edit')
 def edit():
     image = request.args.get("image_url")
+    print(image)
     creator = session.get("name")
     session['media'] = image
+    print(session['media'])
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
                             password="password6", 
@@ -84,8 +86,7 @@ def library():
                             host="localhost", port="5432")
     media_repository = MediaRepository(conn)
     media = media_repository.find(creator) # find all users saved images (could be any number)
-    if len(media) >= 1:
-        print(type(media[0][-2]))
+    print(media)
     return render_template("library.html", name=creator, library=media)
 # @app.route('/rotate_image', methods=['POST'])
 # def rotate_image():

@@ -50,7 +50,7 @@
 <div class="gallery">
 {% for image in library %} 
 <div class="gallery-item">
-    <canvas id="canvas{{ image[0] }}" height="500" width="600"></canvas>
+    <canvas id="canvas{{ image[0] }}" height="500" width="600" onclick="edit()"></canvas>
     <img src="{{ image[1] }}" id="image{{ image[0] }}" style="display:none;">
 </div>
 <script>
@@ -63,6 +63,12 @@
 
     drawImageOnCanvas("canvas{{ image[0] }}", "image{{ image[0] }}", 
     brightnessSlider, currentRotation, skewNumbers, gradient, gradient_colors)
+
+    function edit() { 
+        let image_url = " {{ image[1] }} "
+        let editUrl = "/edit?image_url="+ encodeURIComponent(image_url);
+        window.location.assign(editUrl);
+    }
 </script>
 
 {% endfor %} 
