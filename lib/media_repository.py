@@ -15,7 +15,15 @@ class MediaRepository():
             medias.append(row)
         return medias
     
-    def find(self, creator):
+    def find_one(self, creator, media_id):
+        cursor = self._connection.cursor()
+        cursor.execute(
+            'SELECT * FROM medias WHERE creator = %s AND id = %s', (creator, media_id)
+            )
+        results = cursor.fetchone()
+        return results
+    
+    def find_users_all(self, creator):
         cursor = self._connection.cursor()
         cursor.execute(
             'SELECT * FROM medias WHERE creator = %s', [creator]

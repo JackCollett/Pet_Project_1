@@ -58,23 +58,30 @@ def index():
 
 @app.route('/edit')
 def edit():
-    image = request.args.get("image_url")
-    print(image)
+    image_id = request.args.get("image_id")
+    image_url = request.args.get("image_url")
     creator = session.get("name")
-    session['media'] = image
-    print(session['media'])
-    conn = psycopg2.connect(database="media", 
-                            user="postgres", 
-                            password="password6", 
-                            host="localhost", port="5432")
-    media_repository = MediaRepository(conn)
+    session['media'] = image_id
     
-    print(image)
-    conn.commit()
-    conn.close() 
-    return render_template("edit.html", 
-                           name=creator, 
-                           image=image)
+    if image_id:
+        session['media'] = image_id
+        print(session['media'])
+        print(creator)
+        conn = psycopg2.connect(database="media", 
+                                user="postgres", 
+                                password="password6", 
+                                host="localhost", port="5432")
+        media_repository = MediaRepository(conn)
+        image = media_repository.find_one(creator, image_id)
+        image_urll = image[1]
+        media = image
+        conn.commit()
+        return render_template("edit.html", name=creator, image=image_urll, media=list(media))
+    elif image_url:
+        session['media'] = image_url
+        return render_template("edit.html", name=creator, image=image_url)
+    else:
+        return "No image selected", 400
     
 @app.route('/library')
 def library():
@@ -85,7 +92,7 @@ def library():
                             password="password6", 
                             host="localhost", port="5432")
     media_repository = MediaRepository(conn)
-    media = media_repository.find(creator) # find all users saved images (could be any number)
+    media = media_repository.find_users_all(creator) # find all users saved images (could be any number)
     print(media)
     return render_template("library.html", name=creator, library=media)
 # @app.route('/rotate_image', methods=['POST'])

@@ -15,6 +15,12 @@
         const context = canvas.getContext('2d');
         const image = document.getElementById(imageID);
 
+        if (!image.complete) {
+            image.onload = function () {
+                drawImageOnCanvas(canvasID, imageID, brightnessSlider, currentRotation, skewNumbers, gradient, gradient_colors);
+            };
+            return;
+        }
         var new_width = image.naturalWidth;
         var new_height = image.naturalHeight;
         if (image.naturalHeight >= 1620 || image.naturalWidth >= 1000) {
@@ -46,10 +52,14 @@
 {% for image in library %} 
 <div class="gallery-item">
     <canvas 
-        id="canvas{{ image[0] }}" 
+        id="{{ image[0] }}" 
         data-url="{{ image[1] }}"
-        height="500" 
-        width="600">
+        data-brightness="{{ image[4] }}"
+        data-rotation="{{ image[3] }}"
+        data-skew="{{ image[5] }}"
+        data-gradient="{{ image[6] }}"
+        data-gradientColors="{{ image[7] }}"
+        width="500" height="800">
     </canvas>
     <img src="{{ image[1] }}" id="image{{ image[0] }}" style="display:none;">
 </div>
@@ -59,7 +69,7 @@
         const canvases = document.querySelectorAll('.gallery canvas');
 
         canvases.forEach((canvas) => {
-            const imageId = canvas.id.replace('canvas', 'image');
+            const imageId = 'image' + canvas.id;
             const image = document.getElementById(imageId);
 
             drawImageOnCanvas(canvas.id, image.id, 
@@ -67,14 +77,12 @@
                 canvas.dataset.rotation, 
                 canvas.dataset.skew, 
                 canvas.dataset.gradient, 
-                canvas.dataset.gradient_colors
+                canvas.dataset.gradientcolors
                 );
-                
-            console.log(canvas.dataset)
+            console.log(canvas.id)
 
             canvas.addEventListener('click', () => {
-                const imageUrl = canvas.dataset.url;
-                const editUrl = '/edit?image_url=' + encodeURIComponent(imageUrl);
+                const editUrl = '/edit?image_id=' + canvas.id;
                 window.location.assign(editUrl);
             });
         });
