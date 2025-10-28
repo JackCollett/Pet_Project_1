@@ -55,7 +55,6 @@
         let color_1 = "#e66465";
         let color_2 = "#000000";
 
-
         const media_1 = {{ media | tojson if media else 'null' }};
         console.log(media_1);
         if (media_1) {
@@ -71,14 +70,14 @@
         const drawImageOnCanvas = function() {
             let new_width = image.naturalWidth;
             let new_height = image.naturalHeight;
-            if (image.naturalHeight >= 1620 || image.naturalWidth >= 1000) {
+            if (image.naturalHeight >= 1620 || image.naturalWidth >= 1100) {
             new_width = image.naturalWidth * 0.5;
             new_height = image.naturalHeight * 0.5;
             }
+            console.log(new_height, new_width);
 
             canvas.width = new_width;
             canvas.height = new_height;
-            console.log(currentRotation);
             context.filter = "brightness(" + brightnessSlider.value + "%) ";
             canvas.style.transform = "rotate(" + currentRotation + "deg) " +
             "matrix(" + skewNumbers + ") ";
@@ -166,6 +165,9 @@
             document.getElementById("dynamicBrightness").innerText = "Brightness: " + brightnessSlider.value;
             drawImageOnCanvas();
         }
+
+        brightnessSlider.dispatchEvent(new Event('input')); // trigger brightness slider to display correct brightness
+
         function saveMedia() {
             fetch('/save_media', {
                 method: 'POST',
