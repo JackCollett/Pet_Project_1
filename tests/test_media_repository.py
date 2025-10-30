@@ -41,7 +41,7 @@ I get the media corresponding to that id back
 def test_find(conn):
     seed_database(conn, "../seeds/media_library.sql")
     repository = MediaRepository(conn)
-    result = repository.find("Dr Doom")
+    result = repository.find_users_all("Dr Doom")
     assert result == [
         (1, 'www.unsplash.test1', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'), 
         (2, 'www.unsplash.test3', 'Dr Doom', 0, 100, '1, 0, 0, 1, 0, 0', False, '#e66465, #000000'),
