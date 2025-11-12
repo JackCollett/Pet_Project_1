@@ -14,4 +14,25 @@ Object-oriented programming was used to manage image data, allowing for cleaner 
 ```
 git clone https://github.com/JackCollett/Pet_Project_1.git
 ```
-
+```
+cd pet_project_1
+```
+```
+python3 -m venv venv
+```
+```
+source venv/bin/activate
+```
+```
+git clone https://github.com/JackCollett/Pet_Project_1.git
+```
+```
+pip install -r requirements.txt
+```
+```
+python seed.py
+```
+```
+flask run
+```
+** Navigate to 'http://localhost:500' **
