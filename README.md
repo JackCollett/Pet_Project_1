@@ -10,5 +10,8 @@ The project uses Unsplash as the image provider, fetching collections via their 
 Object-oriented programming was used to manage image data, allowing for cleaner code organization and easier future modifications. PostgreSQL is used to manage and store user creations, providing full CRUD functionality.
 
 COMMANDS TO INSTALL FROM PACKAGE MANAGER
-1. 
+
+'''
+git clone https://github.com/JackCollett/Pet_Project_1.git
+'''
 
