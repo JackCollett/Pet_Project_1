@@ -1,10 +1,13 @@
+body {
+  background-color: rgb(221, 241, 248);
+}
+
 h1 {
   text-align: center;
 }
 
 a:link {
   color: rgb(36, 124, 255);
-  text-decoration: none;
 }
 
 a:visited {
@@ -75,10 +78,10 @@ div.image-container {
 
 #canvas {
   max-width: 700px;
-  max-height: 800px;
+  max-height: 700px;
   display: block;
-  margin: 20px auto;
-  border: 10px solid #045381;
+  margin: 45px auto;
+  border: 2px solid #fafafa;
 }
 
 .image-gradient {
