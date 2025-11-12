@@ -35,4 +35,4 @@ python seed.py
 ```
 flask run
 ```
-** Navigate to 'http://localhost:500' **
+**Navigate to 'http://localhost:500'**
