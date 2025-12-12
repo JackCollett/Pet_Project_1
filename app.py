@@ -10,7 +10,7 @@ app.config["SESSION_PERMENANT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-conn = psycopg2.connect(database="media", user="postgres", password="password6", host="localhost", port="5432") 
+conn = psycopg2.connect(database="media", user="postgres", password="Password6", host="localhost", port="5432") 
 
 media_repository = MediaRepository(conn)
 
@@ -109,4 +109,5 @@ def login():
 @app.route("/logout")
 def logout():
     session.clear()
+
     return redirect("/")
