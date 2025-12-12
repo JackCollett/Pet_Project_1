@@ -14,13 +14,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 def get_db_connection():
-    return psycopg2.connect(
-        database=os.getenv("DB_NAME"), 
-        user=os.getenv("DB_USER"), 
-        password=os.getenv("DB_PASS"), 
-        host=os.getenv("DB_HOST"), 
-        port=os.getenv("DB_PORT")
-    ) 
+    return psycopg2.connect(os.getenv("DB_URL")) 
 
 conn = get_db_connection()
 
