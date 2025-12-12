@@ -31,7 +31,7 @@ def edit():
         print(creator)
         conn = psycopg2.connect(database="media", 
                                 user="postgres", 
-                                password="password6", 
+                                password="Password6", 
                                 host="localhost", port="5432")
         media_repository = MediaRepository(conn)
         image = media_repository.find_one(creator, image_id)
@@ -51,7 +51,7 @@ def library():
     media = []
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
-                            password="password6", 
+                            password="Password6", 
                             host="localhost", port="5432")
     media_repository = MediaRepository(conn)
     media = media_repository.find_users_all(creator) # find all users saved images (could be any number)
@@ -72,7 +72,7 @@ def save():
 
     conn = psycopg2.connect(database="media", 
                             user="postgres", 
-                            password="password6", 
+                            password="Password6", 
                             host="localhost", port="5432")
     media_repository = MediaRepository(conn)
     
@@ -111,3 +111,4 @@ def logout():
     session.clear()
 
     return redirect("/")
+
