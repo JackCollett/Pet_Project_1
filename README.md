@@ -1,6 +1,9 @@
 # ReactChat
-A simple image editing platform which allows users to log in, select and save their image by altering its shape and colour. 
+A Image editing platform which allows users to log in, select and save their image by altering feature such as size and colour. 
 <img width="1846" height="871" alt="ReactChat" src="https://github.com/user-attachments/assets/d5a911be-db35-43e1-8b83-8072aaee0543" />
+
+Live Demo: <https://react-chat-na2h.onrender.com>
+
 
 # How It's Made:
 
@@ -9,7 +12,7 @@ A simple image editing platform which allows users to log in, select and save th
 The project uses Unsplash as the image provider, fetching collections via their API to display to users. I built the image display and styling with raw HTML and CSS to practice and reinforce my understanding of the fundamentals. 
 Object-oriented programming was used to manage image data, allowing for cleaner code organization and easier future modifications. PostgreSQL is used to manage and store user creations, providing full CRUD functionality.
 
-# Commands to Install (using Linux)
+# Commands to Install Locally (using Linux)
 
 ```
 git clone https://github.com/JackCollett/Pet_Project_1.git
