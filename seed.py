@@ -1,10 +1,9 @@
-import psycopg2
+import psycopg2, os
+from dotenv import load_dotenv
 
-conn = psycopg2.connect(database="media", 
-                        user="postgres", 
-                        password="password6", 
-                        host="localhost", 
-                        port="5432")
+load_dotenv()
+
+conn = psycopg2.connect(os.getenv("DB_URL")) 
 
 cur = conn.cursor() 
 

@@ -3,6 +3,9 @@ from flask_session import Session
 import os, requests, psycopg2, json, secrets
 from lib.media_repository import MediaRepository
 from lib.media import Media
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -11,7 +14,10 @@ app.config["SESSION_PERMANANT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-conn = psycopg2.connect(database="media", user="postgres", password="password6", host="localhost", port="5432") 
+def get_db_connection():
+    return psycopg2.connect(os.getenv("DB_URL")) 
+
+conn = get_db_connection()
 
 media_repository = MediaRepository(conn)
 
@@ -30,10 +36,7 @@ def edit():
         session['media'] = int(image_id)
         print(session['media'])
         print(creator)
-        conn = psycopg2.connect(database="media", 
-                                user="postgres", 
-                                password="password6", 
-                                host="localhost", port="5432")
+        conn = get_db_connection()
         media_repository = MediaRepository(conn)
         image = media_repository.find_one(creator, image_id)
         image_urll = image[1]
@@ -50,10 +53,7 @@ def edit():
 def library():
     creator = session.get("name")
     media = []
-    conn = psycopg2.connect(database="media", 
-                            user="postgres", 
-                            password="password6", 
-                            host="localhost", port="5432")
+    conn = get_db_connection()
     media_repository = MediaRepository(conn)
     media = media_repository.find_users_all(creator) # find all users saved images (could be any number)
     print(media)
@@ -71,10 +71,8 @@ def save():
     gradient = data.get('gradient')
     gradient_colors = data.get('gradient_colors')
 
-    conn = psycopg2.connect(database="media", 
-                            user="postgres", 
-                            password="password6", 
-                            host="localhost", port="5432")
+    conn = get_db_connection()
+
     media_repository = MediaRepository(conn)
     
     if type(media_data) is int: # means we are re-editing image so update is required
@@ -114,4 +112,6 @@ def login():
 @app.route("/logout")
 def logout():
     session.clear()
+
     return redirect("/")
+
